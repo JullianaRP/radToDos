@@ -1,12 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
-const Note = () => {
+const Note = ({data, onDelete}) => {
+  const { date, note } = data;
   return (
     <>
       <View style={styles.note}>
-        <Text style={styles.noteText}>Date</Text>
-        <Text style={styles.noteText}>Note</Text>
+        <Text style={styles.noteText}>{date}</Text>
+        <Text style={styles.noteText}>{date}</Text>
+
+        <TouchableOpacity onPress={onDelete} style={styles.noteDelete}>
+          <Text style={styles.noteDeleteText}>X</Text>
+        </TouchableOpacity>
       </View>
     </>
   )

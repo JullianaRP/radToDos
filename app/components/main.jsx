@@ -1,7 +1,29 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import Notes from './Notes';
 
 const Main = () => {
+  const [notes, setNotes] = useState([]);
+  const [inputVal, setInputVal] = useState('');
+
+  const addNote = useCallback(() => {
+    if(inputVal.length) {
+      const d = new Date();
+      const payload = {
+        date: `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`,
+        note: inputVal
+      };
+
+      setNotes([payloadm, ...notes]);
+      setInputVal('');
+    };
+  }, [notes, inputVal]);
+
+  const onDelete = useCallback((i) => () => {
+    notes.splice(i, 1)
+    setNotes([...notes])
+  }, [notes]);
+
   return (
     <>
       <View style={styles.container}>
@@ -9,18 +31,22 @@ const Main = () => {
           <Text  style={styles.headerText}>- Rad To Do's</Text>
         </View>
         <ScrollView style={styles.scrollContainer}>
-
+          {notes.map((item, i) => (
+            <Note key={i} data={item} onDelete={onDelete(i)} />
+          ))}
         </ScrollView>
         <View>
           <TextInput
+            onChangeText={(userInput) => setInputVal(userInput)}
             style={styles.textInput}
             placeholder="> add somenthing rad..."
             placeholderTextColor="#eee"
             underlineColorAndroid="transparent"
+            value={inputVal}
           >
           </TextInput>
         </View>
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity onPress={addNote} style={styles.addButton}>
           <Text style={styles.addButtonText}>+</Text>
         </TouchableOpacity>
       </View>
